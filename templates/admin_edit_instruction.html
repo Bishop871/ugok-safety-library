@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Редактировать инструкцию{% endblock %}
+
+{% block content %}
+<h1>Редактировать инструкцию</h1>
+
+<p><a href="{{ url_for('admin_panel') }}">← Назад в админ панель</a></p>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <label>Название</label><br>
+  <input type="text" name="title" value="{{ instruction['title'] }}"
+         style="width:100%; padding:10px;" required><br><br>
+
+  <label>Текущий файл</label><br>
+  <a href="{{ url_for('static', filename=instruction['file_path']) }}" target="_blank">
+    {{ instruction['file_path'] }}
+  </a>
+  <br><br>
+
+  <label>Заменить PDF (не обязательно)</label><br>
+  <input type="file" name="pdf_file" accept="application/pdf"><br><br>
+
+  <button type="submit">Сохранить</button>
+</form>
+
+{% endblock %}

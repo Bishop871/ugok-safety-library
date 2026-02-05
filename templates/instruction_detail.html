@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ instruction["title"] }}{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+  <!-- Заголовок + действия -->
+  <div class="doc-header">
+    <div class="doc-title">
+      <h1>{{ instruction["title"] }}</h1>
+      <p class="doc-subtitle">Инструкция по охране труда и технике безопасности</p>
+    </div>
+
+    <div class="doc-actions">
+      <a class="btn btn-primary"
+         href="{{ url_for('instruction_test', instruction_id=instruction['id']) }}">
+        Пройти тест
+      </a>
+
+      <a class="btn btn-secondary"
+         href="{{ url_for('static', filename=instruction['file_path']) }}"
+         target="_blank">
+        Открыть PDF
+      </a>
+
+      <a class="btn btn-secondary"
+         href="{{ url_for('static', filename=instruction['file_path']) }}"
+         download>
+        Скачать
+      </a>
+    </div>
+  </div>
+
+  <!-- Карточка документа -->
+  <div class="doc-card">
+
+    <!-- Просмотр PDF -->
+    <div class="pdf-frame-wrap">
+      <iframe
+        src="{{ url_for('static', filename=instruction['file_path']) }}"
+        class="pdf-frame"
+        loading="lazy">
+      </iframe>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

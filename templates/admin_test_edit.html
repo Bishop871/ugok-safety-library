@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Тест — {{ instruction["title"] }}{% endblock %}
+
+{% block content %}
+<h1>Тест: {{ instruction["title"] }}</h1>
+
+<form method="POST"
+      action="{{ url_for('admin_delete_test', instruction_id=instruction['id']) }}"
+      style="margin: 12px 0;">
+  <button type="submit"
+          onclick="return confirm('Удалить тест полностью? Все вопросы и ответы будут удалены!')"
+          style="background:#dc2626; color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer;">
+    Удалить тест
+  </button>
+</form>
+
+<p><a href="{{ url_for('admin_tests') }}">← назад</a></p>
+
+<h2>Добавить вопрос</h2>
+<form method="POST" action="{{ url_for('admin_add_question', instruction_id=instruction['id']) }}">
+  <input type="text" name="question_text" style="width:80%;" required>
+  <button type="submit">Добавить</button>
+</form>
+
+<hr>
+
+{% for q in questions %}
+  <div style="border:1px solid #ddd; padding:12px; border-radius:10px; margin-bottom:14px;">
+    <b>Вопрос:</b> {{ q["text"] }}
+
+    <form method="POST" action="{{ url_for('admin_delete_question', question_id=q['id']) }}"
+          style="display:inline;">
+      <button type="submit" onclick="return confirm('Удалить вопрос?')">Удалить</button>
+    </form>
+
+    <h4>Ответы</h4>
+    <ul>
+      {% for a in q["answers"] %}
+        <li>
+          {% if a["is_correct"] == 1 %}
+            <b style="color:green;">✔ {{ a["answer_text"] }}</b>
+          {% else %}
+            {{ a["answer_text"] }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <form method="POST" action="{{ url_for('admin_add_answer', question_id=q['id']) }}">
+      <input type="text" name="answer_text" placeholder="Текст ответа" required>
+      <label>
+        <input type="checkbox" name="is_correct" value="1">
+        правильный
+      </label>
+      <button type="submit">Добавить ответ</button>
+    </form>
+  </div>
+{% endfor %}
+
+{% endblock %}

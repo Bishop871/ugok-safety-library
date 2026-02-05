@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Результат теста{% endblock %}
+
+{% block content %}
+<h1>Результат теста</h1>
+
+<p>Правильных ответов: <b>{{ score }}</b> из <b>{{ total }}</b></p>
+
+
+
+<a href="{{ url_for('instruction_test', instruction_id=instruction_id) }}">Пройти тест ещё раз</a>
+<br>
+<a href="{{ url_for('instruction_detail', instruction_id=instruction_id) }}">← Назад к инструкции</a>
+{% endblock %}

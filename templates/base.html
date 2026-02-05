@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>{% block title %}Электронная библиотека{% endblock %}</title>
+
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <a href="https://www.ugok.ru/"><img src="{{ url_for('static', filename='images/ugok_logo.png') }}" alt="Логотип"></a>
+
+        <div class="org-name">
+          <h1>Учалинский горно-обогатительный Комбинат</h1>
+          <span>Электронная библиотека предприятия</span>
+          <div class="header-links">
+          <a href="{{ url_for('index') }}">Главная</a>
+          <a href="{{ url_for('instructions') }}">Инструкции</a>
+          <a href="{{ url_for('admin_panel') }}">Редактирование</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <strong>Контакты организации</strong><br />
+        Адрес: г. Учалы, ул. Горнозаводская, д. 2
+      </div>
+
+      <div class="contacts">
+        Телефон: <a href="tel:+70000000000">+7 (34791) 9-55-33</a><br />
+      </div>
+
+      <div>
+        © <span id="year"></span> ОАО «Учалинский ГОК»
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

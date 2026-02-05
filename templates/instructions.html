@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Инструкции{% endblock %}
+
+{% block content %}
+<form method="GET" action="{{ url_for('instructions') }}" class="search-form">
+  <input type="text" name="q" placeholder="Поиск инструкции..." value="{{ q or '' }}">
+  <button type="submit">Найти</button>
+
+  {% if q %}
+    <a href="{{ url_for('instructions') }}">Сброс</a>
+  {% endif %}
+</form>
+
+  <div class="card">
+      <h2 style="margin-top:0;">Инструкции по технике безопасности</h2>
+      <p style="margin-bottom:0;">
+        <h4>
+    <ul>
+      {% for i in instructions %}
+      <li><a href="{{ url_for('instruction_detail', instruction_id=i['id']) }}">{{ i['title'] }}</a></li>
+        {% endfor %}
+    </ul>
+        </h4>
+    </div>
+{% endblock %}

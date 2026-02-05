@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Тест{% endblock %}
+
+{% block content %}
+<h1>Тест усвоения информации</h1>
+
+<form method="POST">
+  {% for q in questions %}
+    <div style="margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:10px;">
+      <b>{{ loop.index }}. {{ q.text }}</b>
+
+      <div style="margin-top:10px;">
+        {% for a in q.answers %}
+          <label style="display:block; margin:6px 0;">
+            <input type="radio" name="q_{{ q.id }}" value="{{ a['id'] }}">
+            {{ a["answer_text"] }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <button type="submit">Отправить ответы</button>
+</form>
+
+<p style="margin-top:16px;">
+  <a href="{{ url_for('instruction_detail', instruction_id=instruction_id) }}">← Назад к инструкции</a>
+</p>
+{% endblock %}

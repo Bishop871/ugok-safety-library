@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Админ — тесты{% endblock %}
+
+{% block content %}
+<h1>Управление тестами</h1>
+
+<p><a href="{{ url_for('admin_panel') }}">← Назад в админ панель</a></p>
+
+<form method="GET" action="{{ url_for('admin_tests') }}" class="search-form">
+  <input type="text" name="q" placeholder="Поиск по инструкциям..." value="{{ q or '' }}">
+  <button type="submit">Найти</button>
+
+  {% if q %}
+    <a href="{{ url_for('admin_tests') }}">Сброс</a>
+  {% endif %}
+</form>
+
+<ul>
+  {% for i in instructions %}
+    <li style="margin-bottom:10px;">
+      <b>{{ i["title"] }}</b>
+      (вопросов: {{ i["q_count"] }})
+      —
+      <a href="{{ url_for('admin_test_edit', instruction_id=i['id']) }}">
+        Редактировать тест
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
