@@ -4,9 +4,49 @@
 {% block content %}
 <h1>Результат теста</h1>
 
-<p>Правильных ответов: <b>{{ score }}</b> из <b>{{ total }}</b></p>
+<div style="margin-bottom:20px; padding:16px; border:1px solid #ddd; border-radius:12px; background:#fafafa;">
+  <p>Правильных ответов: <b>{{ score }}</b> из <b>{{ total }}</b></p>
+  <p>Процент выполнения: <b>{{ percentage }}%</b></p>
+  <p>Порог прохождения: <b>{{ threshold_percent }}%</b></p>
 
+  {% if passed %}
+    <p style="color:#0a7a2f; font-weight:700; margin-bottom:0;">✅ Тест пройден</p>
+  {% else %}
+    <p style="color:#c62828; font-weight:700; margin-bottom:0;">❌ Тест не пройден</p>
+  {% endif %}
+</div>
 
+<h2>Разбор ответов</h2>
+
+{% for item in details %}
+  <div style="margin-bottom:16px; padding:14px; border:1px solid {% if item.is_correct %}#b7e4c7{% else %}#f5c2c7{% endif %}; border-radius:12px; background:{% if item.is_correct %}#f3fff6{% else %}#fff5f5{% endif %};">
+    <p style="margin-top:0;"><b>{{ loop.index }}. {{ item.question_text }}</b></p>
+
+    {% if not item.is_answered %}
+      <p style="color:#c62828;"><b>Ответ не выбран.</b></p>
+    {% elif item.is_correct %}
+      <p style="color:#0a7a2f;"><b>Верно.</b></p>
+    {% else %}
+      <p style="color:#c62828;"><b>Ошибка.</b></p>
+    {% endif %}
+
+    <div>
+      {% for answer in item.answers %}
+        <div style="margin:6px 0;">
+          {% if answer.is_selected and answer.is_correct %}
+            ✅ <b>{{ answer.text }}</b> — ваш ответ, верно
+          {% elif answer.is_selected and not answer.is_correct %}
+            ❌ <b>{{ answer.text }}</b> — ваш ответ
+          {% elif answer.is_correct %}
+            ✔ {{ answer.text }} — правильный ответ
+          {% else %}
+            {{ answer.text }}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
 
 <a href="{{ url_for('instruction_test', instruction_id=instruction_id) }}">Пройти тест ещё раз</a>
 <br>
