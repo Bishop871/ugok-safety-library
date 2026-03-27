@@ -10,6 +10,7 @@ app = Flask(__name__)
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_FOLDER = BASE_DIR / "static" / "uploads"
 ALLOWED_EXTENSIONS = {"pdf"}
+PASS_THRESHOLD_PERCENT = 80
 
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_FOLDER)
 app.secret_key = '8211c978238e3b7b2d77cc2ad920ce489a131b7b'
@@ -506,20 +507,56 @@ def instruction_test(instruction_id):
     if request.method == "POST":
         score = 0
         total = len(questions)
+        threshold_percent = PASS_THRESHOLD_PERCENT
+        details = []
 
-        for q in questions:
+        for q in questions_with_answers:
             chosen_answer_id = request.form.get(f"q_{q['id']}")
+            chosen_answer_id_int = int(chosen_answer_id) if chosen_answer_id else None
 
-            if chosen_answer_id is None:
-                continue
+            question_correct = False
+            correct_answer_texts = []
+            selected_answer_text = None
+            answers_for_result = []
 
-            correct = conn.execute(
-                "SELECT is_correct FROM answers WHERE id = ?",
-                (chosen_answer_id,)
-            ).fetchone()
+            for answer in q["answers"]:
+                answer_row = conn.execute(
+                    "SELECT is_correct FROM answers WHERE id = ?",
+                    (answer["id"],)
+                ).fetchone()
 
-            if correct and correct["is_correct"] == 1:
+                is_correct = bool(answer_row and answer_row["is_correct"] == 1)
+                is_selected = chosen_answer_id_int == answer["id"]
+
+                if is_correct:
+                    correct_answer_texts.append(answer["answer_text"])
+                if is_selected:
+                    selected_answer_text = answer["answer_text"]
+                    if is_correct:
+                        question_correct = True
+
+                answers_for_result.append({
+                    "id": answer["id"],
+                    "text": answer["answer_text"],
+                    "is_correct": is_correct,
+                    "is_selected": is_selected,
+                })
+
+            if question_correct:
                 score += 1
+
+            details.append({
+                "question_id": q["id"],
+                "question_text": q["text"],
+                "answers": answers_for_result,
+                "selected_answer_text": selected_answer_text,
+                "correct_answer_texts": correct_answer_texts,
+                "is_answered": chosen_answer_id_int is not None,
+                "is_correct": question_correct,
+            })
+
+        percentage = round((score / total) * 100) if total else 0
+        passed = percentage >= threshold_percent
 
         conn.close()
 
@@ -527,7 +564,11 @@ def instruction_test(instruction_id):
             "test_result.html",
             instruction_id=instruction_id,
             score=score,
-            total=total
+            total=total,
+            percentage=percentage,
+            threshold_percent=threshold_percent,
+            passed=passed,
+            details=details
         )
 
     conn.close()
