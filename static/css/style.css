@@ -40,20 +40,20 @@
       flex-wrap: wrap;
     }
 
-    .header-links a {
-      font-size: 14px;
-      text-decoration: none;
-      color: var(--text);
-      padding: 4px 8px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-    }
+      .header-links a {
+        font-size: 14px;
+        text-decoration: none;
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+      }
 
-    .header-links a:hover {
-      color: var(--primary);
-      border-color: var(--border);
-      background: #f9fafb;
-    }
+      .header-links a:hover {
+        color: var(--primary);
+        border-color: var(--border);
+        background: #f9fafb;
+      }
 
     .brand {
       display: flex;
