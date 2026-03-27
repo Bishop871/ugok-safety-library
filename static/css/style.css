@@ -60,7 +60,10 @@
       align-items: center;
       gap: 12px;
     }
-
+      .brand-logo img {
+        height: 40px;
+        width: auto;
+      }
     .logo {
       width: 44px;
       height: 44px;
