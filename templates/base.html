@@ -13,21 +13,24 @@
 
   <!-- HEADER -->
   <header>
-    <div class="header-inner">
-      <div class="brand">
-        <a href="https://www.ugok.ru/"><img src="{{ url_for('static', filename='images/library_logo.png') }}" alt="Логотип" height="30%" width="30%></a>
+  <div class="header-inner">
+    <div class="brand">
+      <a class="brand-logo" href="https://www.ugok.ru/" target="_blank" rel="noopener noreferrer">
+        <img src="{{ url_for('static', filename='images/library_logo.png') }}" alt="Логотип">
+      </a>
 
-        <div class="org-name">
-          <h1>Электронная библиотека предприятия</h1>
-          <div class="header-links">
+      <div class="org-name">
+        <h1>Электронная библиотека предприятия</h1>
+
+        <nav class="header-links">
           <a href="{{ url_for('index') }}">Главная</a>
           <a href="{{ url_for('instructions') }}">Инструкции</a>
           <a href="{{ url_for('admin_panel') }}">Редактирование</a>
-        </div>
-        </div>
+        </nav>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
   <!-- MAIN CONTENT -->
   <main>
